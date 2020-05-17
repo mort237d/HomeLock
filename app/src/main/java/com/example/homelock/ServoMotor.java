@@ -19,7 +19,7 @@ public class ServoMotor {
         }
     }
 
-    public void Unlock() {
+    public void Swing0Degrees() {
         try {
             mPwm.setPwmDutyCycle(2.5);
             mPwm.setEnabled(true);
@@ -29,7 +29,7 @@ public class ServoMotor {
         }
     }
 
-    public void Lock() {
+    public void Swing90Degrees() {
         try {
             mPwm.setPwmDutyCycle(7.5);
             Log.d(TAG,"Swing90");

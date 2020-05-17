@@ -7,6 +7,10 @@ import com.google.android.things.pio.PeripheralManager;
 
 public class MainActivity extends Activity {
 
+    private ServoMotor servoMotor;
+    private LED greenLED;
+    private LED redLED;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -14,14 +18,34 @@ public class MainActivity extends Activity {
 
         PeripheralManager pm = PeripheralManager.getInstance();
 
-        ServoMotor servoMotor = new ServoMotor(pm);
+        servoMotor = new ServoMotor(pm);
+        redLED = new LED(pm, "BCM21");
+        greenLED = new LED(pm, "BCM20");
 
-        servoMotor.Unlock();
+        Lock();
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        servoMotor.Lock();
+        Unlock();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Lock();
+    }
+
+    private void Lock(){
+        servoMotor.Swing90Degrees();
+        greenLED.turnOff();
+        redLED.turnOn();
+    }
+
+    private void Unlock(){
+        servoMotor.Swing0Degrees();
+        redLED.turnOff();
+        greenLED.turnOn();
     }
 }
