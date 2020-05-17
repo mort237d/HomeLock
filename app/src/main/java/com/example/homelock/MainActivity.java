@@ -10,6 +10,8 @@ public class MainActivity extends Activity {
     private ServoMotor servoMotor;
     private LED greenLED;
     private LED redLED;
+    private  PhysicalButton greenButton;
+    private  PhysicalButton redButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,20 +23,13 @@ public class MainActivity extends Activity {
         servoMotor = new ServoMotor(pm);
         redLED = new LED(pm, "BCM21");
         greenLED = new LED(pm, "BCM20");
+        redButton = new PhysicalButton(pm, "BCM19");
+        greenButton = new PhysicalButton(pm, "BCM26");
 
-        Lock();
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        while(true){
+            if (greenButton.Pushed()) Unlock();
+            if (redButton.Pushed()) Lock();
         }
-        Unlock();
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Lock();
     }
 
     private void Lock(){
