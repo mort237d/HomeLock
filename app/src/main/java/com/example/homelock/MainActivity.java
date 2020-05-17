@@ -1,7 +1,5 @@
 package com.example.homelock;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.os.Bundle;
 
@@ -18,12 +16,12 @@ public class MainActivity extends Activity {
 
         ServoMotor servoMotor = new ServoMotor(pm);
 
-        servoMotor.Swing0Degree();
+        servoMotor.Unlock();
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        servoMotor.Swing90Degree();
+        servoMotor.Lock();
     }
 }
