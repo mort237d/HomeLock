@@ -33,4 +33,8 @@ public class LED {
             e.printStackTrace();
         }
     }
+
+    public boolean getState() throws IOException {
+        return mLed.getValue();
+    }
 }
