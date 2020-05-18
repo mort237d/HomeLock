@@ -7,6 +7,7 @@ import android.view.KeyEvent;
 
 import com.google.android.things.pio.PeripheralManager;
 import com.nilhcem.androidthings.driver.keypad.Keypad;
+import com.nilhcem.androidthings.driver.keypad.KeypadInputDriver;
 
 import java.io.IOException;
 
@@ -23,6 +24,8 @@ public class MainActivity extends Activity {
     private LCD1602 screen;
     private KeyPad keyPad;
 
+    private KeypadInputDriver mInputDriver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,16 +41,54 @@ public class MainActivity extends Activity {
         greenButton = new PhysicalButton(pm, "BCM26");
         blueButton = new PhysicalButton(pm, "BCM6");
         screen = new LCD1602();
-        keyPad = new KeyPad();
+        //keyPad = new KeyPad();
 
         Lock();
 
-        while(true){
-            if (greenButton.Pushed()) Unlock();
-            if (redButton.Pushed()) Lock();
-            if (blueButton.Pushed()) Pairing();
+        String[] rowPins = new String[]{"BCM12", "BCM16", "BCM20", "BCM21"};
+        String[] colPins = new String[]{"BCM25", "BCM24", "BCM23", "BCM27"};
+
+        try {
+            mInputDriver = new KeypadInputDriver(rowPins, colPins, Keypad.KEYS_4x4);
+            mInputDriver.register();
+        } catch (IOException e) {
+            // error configuring keypad...
         }
+
+        buttonThread.start();
     }
+
+    private String input = "";
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Log.i(TAG, "onKeyDown: " + event.getDisplayLabel());
+
+        input += event.getDisplayLabel();
+        screen.Print(input, "");
+        return true;
+    }
+
+    Thread buttonThread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            try {
+                while(true){
+                    if (greenButton.Pushed()) Unlock();
+                    if (redButton.Pushed()) Lock();
+                    if (blueButton.Pushed()) Pairing();
+                }
+            }catch (Exception ex){
+
+            }
+        }
+    });
+
+    /*@Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        Log.i(TAG, "onKeyUp: " + event.getDisplayLabel());
+        return true;
+    }*/
 
     private int timer = 0;
     private int maxTime = 10;
@@ -86,5 +127,16 @@ public class MainActivity extends Activity {
         redLED.turnOff();
         greenLED.turnOn();
         screen.Print("Unlocked", "");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mInputDriver.unregister();
+        try {
+            mInputDriver.close();
+        } catch (IOException e) {
+            // error closing input driver
+        }
     }
 }
