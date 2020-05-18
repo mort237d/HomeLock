@@ -54,6 +54,7 @@ public class MainActivity extends Activity {
             try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
             timer += 1;
         }
+        timer = 0;
         screen.Print("Bluetooth", "No devices attached");
     }
 
