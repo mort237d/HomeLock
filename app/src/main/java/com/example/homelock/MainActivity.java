@@ -33,6 +33,7 @@ public class MainActivity extends Activity {
         screen = new LCD1602();
 
         screen.Print("HomeLock", "");
+        Lock();
 
         while(true){
             if (greenButton.Pushed()) Unlock();
@@ -41,24 +42,20 @@ public class MainActivity extends Activity {
         }
     }
 
+    private int timer = 0;
+    private int maxTime = 10;
+
     private void Pairing() {
-        int timer = 0;
-        int maxTime = 10;
 
         screen.Print("Pairing", "Waiting for device");
         while (timer < maxTime){
-            try {
-                blueLED.turnOn();
-                Thread.sleep(500);
-                blueLED.turnOff();
-                Thread.sleep(500);
-                timer += 1;
-
-                if (blueButton.Pushed()) timer = maxTime;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            blueLED.turnOn();
+            try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+            blueLED.turnOff();
+            try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+            timer += 1;
         }
+        screen.Print("Bluetooth", "No devices attached");
     }
 
     private void Lock(){
