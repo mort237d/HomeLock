@@ -32,7 +32,6 @@ public class MainActivity extends Activity {
         blueButton = new PhysicalButton(pm, "BCM6");
         screen = new LCD1602();
 
-        screen.Print("HomeLock", "");
         Lock();
 
         while(true){
