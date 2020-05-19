@@ -5,40 +5,29 @@ import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.nilhcem.androidthings.driver.keypad.Keypad;
+import com.nilhcem.androidthings.driver.keypad.KeypadInputDriver;
 
 import java.io.IOException;
 
-public class KeyPad {
+class KeyPad {
     private static final String TAG = "KEYPAD";
 
-    String[] rowPins = new String[]{"BCM12", "BCM16", "BCM20", "BCM21"};
-    String[] colPins = new String[]{"BCM25", "BCM24", "BCM23", "BCM27"};
+    private String[] rowPins = new String[]{"BCM12", "BCM16", "BCM20", "BCM21"};
+    private String[] colPins = new String[]{"BCM25", "BCM24", "BCM23", "BCM27"};
 
-    private Keypad keypad;
+    private KeypadInputDriver mInputDriver;
 
-    public KeyPad() {
+    KeyPad() {
+
         try {
-            keypad = new Keypad(rowPins, colPins, Keypad.KEYS_4x4);
+            mInputDriver = new KeypadInputDriver(rowPins, colPins, Keypad.KEYS_4x4);
+            mInputDriver.register();
         } catch (IOException e) {
-            e.printStackTrace();
+            // error configuring keypad...
         }
-
-        keypad.register(new Keypad.OnKeyEventListener() {
-            @Override
-            public void onKeyEvent(KeyEvent keyEvent) {
-                String action = keyEvent.getAction() == KeyEvent.ACTION_DOWN ? "ACTION_DOWN" : "ACTION_UP";
-                Log.d(TAG, "onKeyEvent: (" + action + "): " + keyEvent.getDisplayLabel());
-            }
-        });
     }
 
-    public void onDestroy(){
-        // Don't forget to:
-        keypad.unregister();
-        try {
-            keypad.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    void onDestroy(){
+
     }
 }

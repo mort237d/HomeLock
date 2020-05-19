@@ -6,8 +6,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 import com.google.android.things.pio.PeripheralManager;
-import com.nilhcem.androidthings.driver.keypad.Keypad;
-import com.nilhcem.androidthings.driver.keypad.KeypadInputDriver;
 
 import java.io.IOException;
 
@@ -24,7 +22,8 @@ public class MainActivity extends Activity {
     private LCD1602 screen;
     private KeyPad keyPad;
 
-    private KeypadInputDriver mInputDriver;
+    private String passwordInput = "";
+    private boolean locked = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,31 +40,39 @@ public class MainActivity extends Activity {
         greenButton = new PhysicalButton(pm, "BCM26");
         blueButton = new PhysicalButton(pm, "BCM6");
         screen = new LCD1602();
-        //keyPad = new KeyPad();
+        keyPad = new KeyPad();
 
         Lock();
 
-        String[] rowPins = new String[]{"BCM12", "BCM16", "BCM20", "BCM21"};
-        String[] colPins = new String[]{"BCM25", "BCM24", "BCM23", "BCM27"};
-
-        try {
-            mInputDriver = new KeypadInputDriver(rowPins, colPins, Keypad.KEYS_4x4);
-            mInputDriver.register();
-        } catch (IOException e) {
-            // error configuring keypad...
-        }
-
         buttonThread.start();
     }
-
-    private String input = "";
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         Log.i(TAG, "onKeyDown: " + event.getDisplayLabel());
 
-        input += event.getDisplayLabel();
-        screen.Print(input, "");
+        if (event.getDisplayLabel() == '#'){
+            String passwordToUnlock = "13";
+            if (passwordInput.equals(passwordToUnlock)) {
+                if (locked){
+                    passwordInput = "";
+                    Unlock();
+                }
+                else{
+                    passwordInput = "";
+                    Lock();
+                }
+            }
+            else {
+                passwordInput = "";
+                screen.Print("Wrong password", "Try again");
+            }
+        }
+        else{
+            passwordInput += event.getDisplayLabel();
+            screen.Print(passwordInput, "");
+        }
+
         return true;
     }
 
@@ -79,7 +86,7 @@ public class MainActivity extends Activity {
                     if (blueButton.Pushed()) Pairing();
                 }
             }catch (Exception ex){
-
+                Log.e(TAG, "run: ", ex);
             }
         }
     });
@@ -90,32 +97,37 @@ public class MainActivity extends Activity {
         return true;
     }*/
 
-    private int timer = 0;
-    private int maxTime = 10;
+    private int pairingTimer = 0;
+    private int pairingMaxTime = 10;
 
     private void Pairing() {
 
         screen.Print("Pairing", "Waiting for device");
-        while (timer < maxTime){
+        redLED.turnOff();
+        greenLED.turnOff();
+        while (pairingTimer < pairingMaxTime){
             blueLED.turnOn();
             try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
             blueLED.turnOff();
             try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
-            timer += 1;
+            pairingTimer += 1;
         }
-        timer = 0;
+        pairingTimer = 0;
         screen.Print("Bluetooth", "No devices attached");
         try { Thread.sleep(2000); } catch (InterruptedException e) { e.printStackTrace(); }
 
-        try {
-            if (redLED.getState()) screen.Print("Locked", "");
-            else if (greenLED.getState()) screen.Print("Unlocked", "");
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (locked){
+            screen.Print("Locked", "");
+            redLED.turnOn();
+        }
+        else{
+            screen.Print("Unlocked", "");
+            greenLED.turnOn();
         }
     }
 
     private void Lock(){
+        locked = true;
         servoMotor.Swing90Degrees();
         greenLED.turnOff();
         redLED.turnOn();
@@ -123,6 +135,7 @@ public class MainActivity extends Activity {
     }
 
     private void Unlock(){
+        locked = false;
         servoMotor.Swing0Degrees();
         redLED.turnOff();
         greenLED.turnOn();
@@ -132,11 +145,6 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mInputDriver.unregister();
-        try {
-            mInputDriver.close();
-        } catch (IOException e) {
-            // error closing input driver
-        }
+        keyPad.onDestroy();
     }
 }
