@@ -51,26 +51,38 @@ public class MainActivity extends Activity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         Log.i(TAG, "onKeyDown: " + event.getDisplayLabel());
 
-        if (event.getDisplayLabel() == '#'){
-            String passwordToUnlock = "13";
-            if (passwordInput.equals(passwordToUnlock)) {
-                if (locked){
+        switch (event.getDisplayLabel()) {
+            case '#':
+                String passwordToUnlock = "13";
+                if (passwordInput.equals(passwordToUnlock)) {
+                    if (locked) {
+                        passwordInput = "";
+                        Unlock();
+                    } else {
+                        passwordInput = "";
+                        Lock();
+                    }
+                } else {
                     passwordInput = "";
-                    Unlock();
+                    screen.Print("Wrong password", "Try again");
                 }
-                else{
+                break;
+            case 'D':
+                if (passwordInput.length() > 0) {
+                    passwordInput = passwordInput.substring(0, passwordInput.length() - 1);
+                    screen.Print(passwordInput, "DELETE");
+                }
+                break;
+            case 'C':
+                if (passwordInput.length() > 0) {
                     passwordInput = "";
-                    Lock();
+                    screen.Print(passwordInput, "CLEAR");
                 }
-            }
-            else {
-                passwordInput = "";
-                screen.Print("Wrong password", "Try again");
-            }
-        }
-        else{
-            passwordInput += event.getDisplayLabel();
-            screen.Print(passwordInput, "");
+                break;
+            default:
+                passwordInput += event.getDisplayLabel();
+                screen.Print(passwordInput, "");
+                break;
         }
 
         return true;
