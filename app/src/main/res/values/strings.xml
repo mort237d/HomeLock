@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">HomeLock</string>
+    <string name="fritzing_circuit">Fritzing Circuit</string>
 </resources>
