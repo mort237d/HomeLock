@@ -5,6 +5,8 @@ import android.util.Log;
 import com.google.android.things.pio.PeripheralManager;
 import com.google.android.things.pio.Pwm;
 
+import java.io.IOException;
+
 public class ServoMotor {
     private static final String TAG = "SERVO_MOTOR";
     private static final String PWM_PIN = "PWM1";
@@ -35,6 +37,14 @@ public class ServoMotor {
             Log.d(TAG,"Swing90");
         } catch (Exception ex) {
 
+        }
+    }
+
+    public void onDestroy(){
+        try {
+            mPwm.close();
+        } catch (IOException e) {
+            Log.e(TAG, "onDestroy: ", e);
         }
     }
 }
