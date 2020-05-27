@@ -26,8 +26,4 @@ class KeyPad {
             // error configuring keypad...
         }
     }
-
-    void onDestroy(){
-
-    }
 }

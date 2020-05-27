@@ -103,12 +103,6 @@ public class MainActivity extends Activity {
         }
     });
 
-    /*@Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        Log.i(TAG, "onKeyUp: " + event.getDisplayLabel());
-        return true;
-    }*/
-
     private int pairingTimer = 0;
     private int pairingMaxTime = 10;
 
@@ -157,6 +151,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        keyPad.onDestroy();
+        greenLED.onDestroy();
+        redLED.onDestroy();
+        blueLED.onDestroy();
     }
 }

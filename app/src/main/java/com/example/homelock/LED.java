@@ -1,5 +1,7 @@
 package com.example.homelock;
 
+import android.util.Log;
+
 import com.google.android.things.pio.Gpio;
 import com.google.android.things.pio.PeripheralManager;
 
@@ -34,7 +36,11 @@ public class LED {
         }
     }
 
-    public boolean getState() throws IOException {
-        return mLed.getValue();
+    public void onDestroy(){
+        try {
+            mLed.close();
+        } catch (IOException e) {
+            Log.e(TAG, "onDestroy: ", e);
+        }
     }
 }
