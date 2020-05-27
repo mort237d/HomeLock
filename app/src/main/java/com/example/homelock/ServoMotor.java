@@ -17,7 +17,7 @@ public class ServoMotor {
             mPwm = pm.openPwm(PWM_PIN);
             mPwm.setPwmFrequencyHz(50);
         } catch (Exception e){
-            Log.e(TAG, "ServoMotor: ");
+            Log.e(TAG, "ServoMotor: ", e);
         }
     }
 
@@ -27,7 +27,7 @@ public class ServoMotor {
             mPwm.setEnabled(true);
             Log.d(TAG,"Swing0");
         } catch (Exception ex) {
-
+            Log.e(TAG, "Swing0Degrees: ", ex);
         }
     }
 
@@ -36,7 +36,7 @@ public class ServoMotor {
             mPwm.setPwmDutyCycle(7.5);
             Log.d(TAG,"Swing90");
         } catch (Exception ex) {
-
+            Log.e(TAG, "Swing90Degrees: ", ex);
         }
     }
 

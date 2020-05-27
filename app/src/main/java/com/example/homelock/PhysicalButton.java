@@ -16,7 +16,7 @@ public class PhysicalButton {
             button = pm.openGpio(GpioName);
             button.setDirection(Gpio.DIRECTION_IN);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "PhysicalButton: ", e);
         }
     }
 
@@ -24,7 +24,7 @@ public class PhysicalButton {
         try {
             return button.getValue();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Pushed: ", e);
         }
         return false;
     }

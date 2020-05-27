@@ -113,14 +113,20 @@ public class MainActivity extends Activity {
         greenLED.turnOff();
         while (pairingTimer < pairingMaxTime){
             blueLED.turnOn();
-            try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+            try {Thread.sleep(500);} catch (InterruptedException e) {
+                Log.e(TAG, "Pairing: ", e);
+            }
             blueLED.turnOff();
-            try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+            try {Thread.sleep(500);} catch (InterruptedException e) {
+                Log.e(TAG, "Pairing: ", e);
+            }
             pairingTimer += 1;
         }
         pairingTimer = 0;
         screen.Print("Bluetooth", "No devices attached");
-        try { Thread.sleep(2000); } catch (InterruptedException e) { e.printStackTrace(); }
+        try { Thread.sleep(2000); } catch (InterruptedException e) {
+            Log.e(TAG, "Pairing: ", e);
+        }
 
         if (locked){
             screen.Print("Locked", "");

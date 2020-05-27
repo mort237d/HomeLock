@@ -1,5 +1,7 @@
 package com.example.homelock;
 
+import android.util.Log;
+
 import com.nilhcem.androidthings.driver.lcdpcf8574.LcdPcf8574;
 
 import java.io.IOException;
@@ -23,7 +25,7 @@ public class LCD1602 {
             int[] android = {0b00100, 0b01110, 0b11111, 0b00000, 0b11111, 0b11111, 0b11111, 0b11111};
             lcd.createChar(2, android);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "LCD1602: ", e);
         }
     }
 
@@ -35,7 +37,7 @@ public class LCD1602 {
             lcd.setCursor(0, 1);
             lcd.print(text2);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Print: ", e);
         }
     }
 }

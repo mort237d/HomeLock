@@ -23,7 +23,7 @@ class KeyPad {
             mInputDriver = new KeypadInputDriver(rowPins, colPins, Keypad.KEYS_4x4);
             mInputDriver.register();
         } catch (IOException e) {
-            // error configuring keypad...
+            Log.e(TAG, "KeyPad: ", e);
         }
     }
 }

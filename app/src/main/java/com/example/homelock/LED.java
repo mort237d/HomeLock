@@ -16,7 +16,7 @@ public class LED {
             mLed = pm.openGpio(GpioName);
             mLed.setDirection(Gpio.DIRECTION_OUT_INITIALLY_HIGH);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "LED: ", e);
         }
     }
 
@@ -24,7 +24,7 @@ public class LED {
         try {
             mLed.setValue(false);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "turnOn: ", e);
         }
     }
 
@@ -32,7 +32,7 @@ public class LED {
         try {
             mLed.setValue(true);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "turnOff: ", e);
         }
     }
 
