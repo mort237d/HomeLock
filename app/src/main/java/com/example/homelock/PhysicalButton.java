@@ -1,5 +1,7 @@
 package com.example.homelock;
 
+import android.util.Log;
+
 import com.google.android.things.pio.Gpio;
 import com.google.android.things.pio.PeripheralManager;
 
@@ -25,5 +27,13 @@ public class PhysicalButton {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public void onDestroy(){
+        try {
+            button.close();
+        } catch (IOException e) {
+            Log.e(TAG, "onDestroy: ", e);
+        }
     }
 }

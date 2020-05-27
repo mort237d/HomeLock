@@ -154,7 +154,9 @@ public class MainActivity extends Activity {
         greenLED.onDestroy();
         redLED.onDestroy();
         blueLED.onDestroy();
-
+        greenButton.onDestroy();
+        redButton.onDestroy();
+        blueButton.onDestroy();
         servoMotor.onDestroy();
     }
 }
