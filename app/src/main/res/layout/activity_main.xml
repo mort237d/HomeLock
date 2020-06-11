@@ -10,5 +10,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/homelock"
-        android:contentDescription="@string/fritzing_circuit" />
+        android:contentDescription="@string/fritzing_circuit"
+        android:onClick="UpdateButton"/>
 </LinearLayout>

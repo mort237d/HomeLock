@@ -1,9 +1,12 @@
 package com.example.homelock;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.things.pio.PeripheralManager;
 
@@ -164,5 +167,11 @@ public class MainActivity extends Activity {
         redButton.onDestroy();
         blueButton.onDestroy();
         servoMotor.onDestroy();
+    }
+
+    public void UpdateButton(View view) {
+        Toast.makeText(MainActivity.this, "Update2", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(MainActivity.this, SetupActivity.class);
+        startActivity(intent);
     }
 }

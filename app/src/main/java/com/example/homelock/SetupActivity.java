@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.things.update.StatusListener;
@@ -27,7 +28,6 @@ public class SetupActivity extends Activity {
         updateManager.addStatusListener(new StatusListener() {
             @Override
             public void onStatusUpdate(UpdateManagerStatus status) {
-                Log.d(TAG, "onStatusUpdate: " + status.currentState);
                 switch (status.currentState) {
                     case UpdateManagerStatus.STATE_UPDATE_AVAILABLE:
                         /* Notify user of the update */
@@ -42,6 +42,10 @@ public class SetupActivity extends Activity {
         });
 
         // Trigger an update check immediately
-        updateManager.performUpdateNow(UpdatePolicy.POLICY_APPLY_AND_REBOOT);
+        updateManager.performUpdateNow(UpdatePolicy.POLICY_CHECKS_ONLY);
+    }
+
+    public void FinishButton(View view) {
+        finish();
     }
 }
